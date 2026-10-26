@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal de Activitate Fizică</title>
+    <!-- Legături compatibile atât când deschizi fișierul direct (dublu-click), cât și prin server Flask -->
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Antet Principal -->
+        <header class="header">
+            <span class="badge-top">Echipa P08 • Grupa 422A</span>
+            <h1>🏃‍♂️ Jurnal de Activitate Fizică</h1>
+            <p class="subtitle">Ține evidența efortului fizic și urmărește-ți progresul săptămânal</p>
+        </header>
+
+        <!-- Zona de Mesaje / Erori (Cerința 1 - Proba de acceptare) -->
+        {% if mesaj_eroare %}
+        <div class="alert alert-error">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+                <strong>Eroare la introducerea datelor:</strong>
+                <p>{{ mesaj_eroare }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if mesaj_succes %}
+        <div class="alert alert-success">
+            <span class="alert-icon">✅</span>
+            <div class="alert-content">
+                <strong>Confirmare:</strong>
+                <p>{{ mesaj_succes }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Panou Statistici (2 Carduri alăturate pentru un aspect dinamic) -->
+        <section class="stats-grid">
+            <!-- Card 1: Totalul Săptămânal (Cerința 2) -->
+            <div class="stat-card primary">
+                <div class="stat-header">
+                    <span class="stat-title">Volum Săptămânal</span>
+                    <span class="stat-icon">🔥</span>
+                </div>
+                <div class="stat-value">
+                    {{ total_saptamanal|default(0) }} <span class="stat-unit">minute</span>
+                </div>
+                <p class="stat-desc">Calculat automat din sesiunile săptămânii curente</p>
+            </div>
+
+            <!-- Card 2: Obiectiv de activitate -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Obiectiv Săptămânal</span>
+                    <span class="stat-icon">🎯</span>
+                </div>
+                <div class="stat-value" style="color: var(--primary-dark);">
+                    150 <span class="stat-unit" style="color: var(--text-muted);">min recomandat</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 35%;"></div>
+                </div>
+                <p class="stat-desc">Recomandarea OMS pentru o viață sănătoasă</p>
+            </div>
+        </section>
+
+        <!-- Formular de Introducere Date (Responsabilitatea Cristinescu Darius) -->
+        <section class="card">
+            <h2 class="card-title">➕ Adaugă o sesiune nouă</h2>
+            <form action="/adauga" method="POST">
+                
+                <div class="form-grid">
+                    <!-- Câmpul 1: Tipul activității -->
+                    <div class="form-group full-width">
+                        <label for="tip_activitate">Tipul activității desfășurate:</label>
+                        <select id="tip_activitate" name="tip_activitate" required>
+                            <option value="" disabled selected>Alege din listă...</option>
+                            <option value="Alergare">🏃 Alergare</option>
+                            <option value="Drumeție">🥾 Drumeție montană</option>
+                            <option value="Sală">🏋️ Sală / Fitness</option>
+                            <option value="Ciclism">🚴 Ciclism</option>
+                            <option value="Înot">🏊 Înot</option>
+                            <option value="Alta">⚡ Alt tip de mișcare</option>
+                        </select>
+                    </div>
+
+                    <!-- Câmpul 2: Durata în minute -->
+                    <div class="form-group">
+                        <label for="durata">Durată efort (în minute):</label>
+                        <input type="number" id="durata" name="durata" placeholder="ex: 45" required>
+                    </div>
+
+                    <!-- Câmpul 3: Data desfășurării -->
+                    <div class="form-group">
+                        <label for="data">Data antrenamentului:</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+                </div>
+
+                <!-- Butonul de trimitere -->
+                <button type="submit" class="btn-submit">
+                    <span>Înregistrează Sesiunea</span>
+                    <span>✨</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Tabel cu Istoricul Sesiunilor -->
+        <section class="card">
+            <h2 class="card-title">📋 Istoric Activități</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Activitate</th>
+                            <th>Durată</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if sesiuni and sesiuni|length > 0 %}
+                            {% for sesiune in sesiuni %}
+                            <tr>
+                                <td>{{ sesiune.data }}</td>
+                                <td>
+                                    <span class="badge badge-other">{{ sesiune.tip_activitate }}</span>
+                                </td>
+                                <td><span class="duration-highlight">{{ sesiune.durata }} min</span></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="empty-state">
+                                    <span class="empty-state-icon">👟</span>
+                                    Nu există activități înregistrate încă.<br>
+                                    Completează formularul de mai sus pentru a începe istoricul!
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Subsol -->
+        <footer class="footer">
+            <p>Proiect PCLP 3 • <strong>Jurnal de activitate fizică (P08)</strong></p>
+            <p>Interfață dezvoltată de: <span>Cristinescu Darius-Petre</span></p>
+        </footer>
+
+    </div>
+</body>
+</html>

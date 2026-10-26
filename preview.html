@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previzualizare - Jurnal de Activitate Fizică</title>
+    <!-- Legătura directă la CSS -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Antet Principal -->
+        <header class="header">
+            <span class="badge-top">Echipa P08 • Grupa 422A</span>
+            <h1>🏃‍♂️ Jurnal de Activitate Fizică</h1>
+            <p class="subtitle">Ține evidența efortului fizic și urmărește-ți progresul săptămânal</p>
+        </header>
+
+        <!-- Exemplu de Mesaj de Eroare (Așa va arăta când cineva introduce durată negativă!) -->
+        <div class="alert alert-error">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+                <strong>Eroare la introducerea datelor (Cerința 1):</strong>
+                <p>Durata activității nu poate fi negativă! Te rugăm să introduci un număr pozitiv de minute.</p>
+            </div>
+        </div>
+
+        <!-- Panou Statistici (Sumar săptămânal) -->
+        <section class="stats-grid">
+            <!-- Card 1: Totalul Săptămânal (Cerința 2) -->
+            <div class="stat-card primary">
+                <div class="stat-header">
+                    <span class="stat-title">Volum Săptămânal</span>
+                    <span class="stat-icon">🔥</span>
+                </div>
+                <div class="stat-value">
+                    125 <span class="stat-unit">minute</span>
+                </div>
+                <p class="stat-desc">Calculat automat din sesiunile săptămânii curente</p>
+            </div>
+
+            <!-- Card 2: Obiectiv de activitate -->
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Obiectiv Săptămânal</span>
+                    <span class="stat-icon">🎯</span>
+                </div>
+                <div class="stat-value" style="color: var(--primary-dark);">
+                    150 <span class="stat-unit" style="color: var(--text-muted);">min recomandat</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 83%;"></div>
+                </div>
+                <p class="stat-desc">Ai realizat 83% din obiectivul săptămânal!</p>
+            </div>
+        </section>
+
+        <!-- Formular de Introducere Date -->
+        <section class="card">
+            <h2 class="card-title">➕ Adaugă o sesiune nouă</h2>
+            <form action="/adauga" method="POST">
+                
+                <div class="form-grid">
+                    <!-- Câmpul 1: Tipul activității -->
+                    <div class="form-group full-width">
+                        <label for="tip_activitate">Tipul activității desfășurate:</label>
+                        <select id="tip_activitate" name="tip_activitate" required>
+                            <option value="" disabled>Alege din listă...</option>
+                            <option value="Alergare" selected>🏃 Alergare</option>
+                            <option value="Drumeție">🥾 Drumeție montană</option>
+                            <option value="Sală">🏋️ Sală / Fitness</option>
+                            <option value="Ciclism">🚴 Ciclism</option>
+                            <option value="Înot">🏊 Înot</option>
+                            <option value="Alta">⚡ Alt tip de mișcare</option>
+                        </select>
+                    </div>
+
+                    <!-- Câmpul 2: Durata în minute -->
+                    <div class="form-group">
+                        <label for="durata">Durată efort (în minute):</label>
+                        <input type="number" id="durata" name="durata" value="45" required>
+                    </div>
+
+                    <!-- Câmpul 3: Data desfășurării -->
+                    <div class="form-group">
+                        <label for="data">Data antrenamentului:</label>
+                        <input type="date" id="data" name="data" value="2026-10-26" required>
+                    </div>
+                </div>
+
+                <!-- Butonul de trimitere -->
+                <button type="submit" class="btn-submit">
+                    <span>Înregistrează Sesiunea</span>
+                    <span>✨</span>
+                </button>
+            </form>
+        </section>
+
+        <!-- Tabel cu Date Exemple -->
+        <section class="card">
+            <h2 class="card-title">📋 Istoric Activități (Exemple)</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Activitate</th>
+                            <th>Durată</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2026-10-26</td>
+                            <td><span class="badge badge-run">🏃 Alergare</span></td>
+                            <td><span class="duration-highlight">45 min</span></td>
+                        </tr>
+                        <tr>
+                            <td>2026-10-24</td>
+                            <td><span class="badge badge-gym">🏋️ Sală / Fitness</span></td>
+                            <td><span class="duration-highlight">50 min</span></td>
+                        </tr>
+                        <tr>
+                            <td>2026-10-22</td>
+                            <td><span class="badge badge-bike">🚴 Ciclism</span></td>
+                            <td><span class="duration-highlight">30 min</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Subsol -->
+        <footer class="footer">
+            <p>Proiect PCLP 3 • <strong>Jurnal de activitate fizică (P08)</strong></p>
+            <p>Interfață dezvoltată de: <span>Cristinescu Darius-Petre</span></p>
+        </footer>
+
+    </div>
+</body>
+</html>
+

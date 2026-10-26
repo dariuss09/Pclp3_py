@@ -1,0 +1,13 @@
+# Documentație personală
+README_CRISTINESCU-DARIUS.md
+
+# Fișiere temporare LibreOffice / Word
+.~lock.*.docx#
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+instance/
+.env
+
